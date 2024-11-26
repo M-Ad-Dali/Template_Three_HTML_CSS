@@ -3,6 +3,8 @@
   --min-color: #2196F3;
   --min-color-alt: #1787E0;
   --main-transition: 0.3s;
+  --main-padding-top: 100px;
+  --main-padding-bottom: 100px;
   --secondary-color: ;
   --therd-color: ;
   --transpearent-color: ;
@@ -36,12 +38,6 @@ ul {
   padding-right: 15px;
   margin-left: auto;
   margin-right: auto;
-  width: 600px;
-}
-@media (max-width: 767px) {
-  .container {
-    width: 100%;
-  }
 }
 /* Small */
 @media (min-width: 768px) {
@@ -60,6 +56,46 @@ ul {
   .container {
     width: 1170px;
   }
+}
+.main-title {
+  margin: 0 auto 80px;
+  border: 2px solid black;
+  padding: 10px 20px;
+  font-size: 30px;
+  width: fit-content;
+  position: relative;
+  z-index: 1;
+  transition: var(--main-transition);
+}
+.main-title::before,
+.main-title::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background-color: var(--min-color);
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.main-title::before {
+  left: -30px;
+}
+.main-title::after {
+  right: -30px;
+}
+.main-title:hover:before {
+  z-index: -1;
+  animation: left-move 0.5s linear forwards;
+}
+.main-title:hover::after {
+  z-index: -1;
+  animation: right-move 0.5s linear forwards;
+}
+.main-title:hover {
+  color: white;
+  border: 2px solid white;
+  transition-delay: 0.5;
 }
 /* End global Rules */
 /* Start Header */
@@ -100,6 +136,11 @@ position: relative;
     margin: auto;
   }
 }
+.header .main-nav > li:hover .mega-menu {
+  opacity: 1;
+  z-index: 100;
+  top: calc(100% + 1px);
+}
 .header .main-nav > li > a {
   display: flex;
   justify-content: center;
@@ -135,6 +176,77 @@ position: relative;
 .header .main-nav > li > a:hover::before {
   left: 0;
 }
+/* Start Megamenu */
+.header .mega-menu {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  padding: 30px;
+  background-color: white;
+  border-bottom: 3px solid var(--min-color);
+  z-index: -1;
+  display: flex;
+  gap: 40px;
+  top: calc(100% + 50px);
+  opacity: 0;
+  transition: top var(--main-transition), opaity var(--main-transition);
+}
+@media (max-width: 767px) {
+  .header .mega-menu {
+    flex-direction: column;
+    gap: 0;
+    padding: 5px;
+  }
+}
+.header .mega-menu .image img {
+  max-width: 100%;
+}
+@media (max-width: 1024px) {
+  .header .mega-menu .image {
+    display: none;
+  }
+}
+.header .mega-menu .links {
+  min-width: 250px;
+  flex: 1;
+}
+.header .mega-menu .links li {
+  position: relative;
+}
+.header .mega-menu .links li:not(:last-child) {
+  border-bottom: 1px solid #E9E6E6;
+}
+@media (max-width: 767px) {
+  .header .mega-menu .links:first-of-type li:last-child {
+    border-bottom: 1px solid #E9E6E6;
+  }
+}
+.header .mega-menu .links li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #FAFAFA;
+  z-index: -1;
+  transition: var(--main-transition);
+}
+.header .mega-menu .links li:hover:before {
+  content: "";
+  width: 100%;
+}
+.header .mega-menu .links li a {
+  color: var(--min-color);
+  display: block;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.header .mega-menu .links li a i {
+  margin-right: 10px;
+}
+/* End Megamenu */
 /* End Header */
 /* Start landing */
 .landing {
@@ -161,10 +273,20 @@ position: relative;
 .landing .text {
   flex: 1;
 }
+@media (max-width: 991px) {
+  .landing .text {
+    text-align: center;
+  }
+}
 .landing .text h1 {
   font-size: 40px;
   margin: 0;
   letter-spacing: -2px;
+}
+@media (max-width: 767px) {
+  .landing .text h1 {
+    font-size: 28px;
+  }
 }
 .landing .text p {
   font-size: 23px;
@@ -173,10 +295,25 @@ position: relative;
   color: #666;
   max-width: 500px;
 }
+@media (max-width: 991px) {
+  .landing .text p {
+    margin: 10px auto;
+  }
+}
+@media (max-width: 767px) {
+  .landing .text p {
+    font-size: 18px;
+  }
+}
 .landing .image img {
+  position: relative;
   width: 600px;
-  max-width: 100%;
-
+  animation: up-and-down 5s linear infinite;
+}
+@media (max-width: 1023px) {
+  .landing .image {
+    display: none;
+  }
 }
 .landing .go-down {
   color: var(--min-color);
@@ -190,6 +327,114 @@ position: relative;
   color: var(--min-color-alt);
 }
 .landing .go-down i {
-  
+  animation: bouncing 1.5s infinite;
 }
 /* End landing */
+/* Start Articles */
+.articles {
+  padding-top: var(--main-padding-top);
+  padding-bottom: var(--main-padding-bottom);
+  position: relative;
+}
+.articles .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 40px;
+}
+.articles .box {
+  -webkit-box-shadow: 0 2px 15px rgb(0 0 0 / 10%);
+  -mozbox-shadow: 0 2px 15px rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 15px rgb(0 0 0 / 10%);
+  background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform var(--main-transition), box-shadow var(--main-transition);
+}
+.articles .box:hover {
+  transform: translateY(-10px);
+  -webkit-box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+  -mozbox-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
+}
+.articles .box img {
+  width: 100%;
+  max-width: 100%;
+}
+.articles .box .content {
+  padding: 20px;
+}
+.articles .box .content h3 {
+  margin: 0;
+}
+.articles .box .content p {
+  margin: 10px 0 0;
+  line-height: 1.5;
+  color: #777;
+}
+.articles .box .info {
+  padding: 20px;
+  border-top: 1px solid #E6E6E7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.articles .box .info a {
+  color: var(--min-color);
+  font-weight: bold;
+}
+.articles .box .info i {
+  color: var(--min-color);
+}
+.articles .box:hover .info i {
+  animation: moving-arrow 0.6s linear infinite;
+}
+/* end Articles */
+/* Start Animatin */
+@keyframes up-and-down {
+  0%, 100% {
+    top: 0;
+  }
+  50% {
+    top: -50px;
+  }
+}
+@keyframes bouncing {
+  0%, 10%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40%, 60% {
+    transform: translateY(-15px);
+  }
+}
+@keyframes left-move {
+  50% {
+    left: 0;
+    width: 12px;
+    height: 12px;
+  }
+  100% {
+    left: 0;
+    border-radius: 0;
+    width: 51%;
+    height: 100%;
+  }
+}
+@keyframes right-move {
+  50% {
+    right: 0;
+    width: 12px;
+    height: 12px;
+  }
+  100% {
+    right: 0;
+    border-radius: 0;
+    width: 51%;
+    height: 100%;
+  }
+}
+@keyframes moving-arrow {
+  100% {
+    transform: translateX(10px);
+  }
+}
+/* end Animatin */
